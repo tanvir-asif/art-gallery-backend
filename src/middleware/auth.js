@@ -8,10 +8,13 @@ export function signToken(payload) {
 
 export function cookieOptions() {
   const isProd = process.env.NODE_ENV === 'production';
+  // 'strict' for same-site local dev; set COOKIE_SAMESITE=none in production when
+  // the client (e.g. Vercel) and API (e.g. Render) live on different domains.
+  const sameSite = (process.env.COOKIE_SAMESITE || 'strict').toLowerCase();
   return {
     httpOnly: true,
-    secure: isProd,
-    sameSite: 'strict',
+    secure: isProd || sameSite === 'none', // SameSite=None requires Secure
+    sameSite,
     maxAge: 2 * 60 * 60 * 1000, // 2h
     path: '/',
   };

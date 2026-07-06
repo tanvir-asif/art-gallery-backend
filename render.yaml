@@ -1,0 +1,37 @@
+# Render Blueprint — deploy the API as a free Web Service.
+# In Render: New + → Blueprint → connect the art-gallery-backend repo.
+# You'll be prompted to fill the `sync: false` secrets in the dashboard.
+services:
+  - type: web
+    name: art-gallery-backend
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Cross-site cookie between Vercel (client) and Render (API)
+      - key: COOKIE_SAMESITE
+        value: none
+      # JWT signing secret — Render generates a strong value for you
+      - key: JWT_SECRET
+        generateValue: true
+      # Fill these in the Render dashboard (kept out of source):
+      - key: MONGODB_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: ADMIN_USER
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      # The deployed client origin, e.g. https://art-gallery.vercel.app
+      - key: CLIENT_ORIGIN
+        sync: false
