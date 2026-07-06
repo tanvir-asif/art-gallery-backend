@@ -1,0 +1,15 @@
+node_modules/
+
+# env — NEVER commit real secrets
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+
+# editor / os
+.vscode/
+.idea/
+.DS_Store
